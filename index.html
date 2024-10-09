@@ -1,0 +1,50 @@
+<!DOCTYPE html>x
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuel Economy Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        h2 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 200px;
+            margin-right: 10px;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        h3 {
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <h2>Predict Fuel Economy (MPG) based on Horse Power</h2>
+    <form action="/predict" method="post">
+        <label for="horse_power">Horse Power:</label>
+        <input type="text" id="horse_power" name="horse_power" placeholder="Enter Horse Power">
+        <input type="submit" value="Predict">
+    </form>
+
+    {% if prediction_text %}
+        <h3>{{ prediction_text }}</h3>
+    {% endif %}
+</body>
+</html>
