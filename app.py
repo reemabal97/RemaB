@@ -1,9 +1,7 @@
-from flask import Flask, request, render_template
+import streamlit as st
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 import joblib
-
-app = Flask(__name__)
 
 # Load the dataset and train the model
 file_path = 'FuelEconomy.csv'
@@ -22,21 +20,17 @@ joblib.dump(model, 'model.pkl')
 # Load the model from the file
 model = joblib.load('model.pkl')
 
-@app.route('/')
-def home():
-    return render_template('index.html')
+# Streamlit code for the web interface
+st.title('Fuel Economy Prediction')
+st.write('Enter the horse power of the vehicle to predict the fuel economy (MPG):')
 
-@app.route('/predict', methods=['POST'])
-def predict():
-    try:
-        horse_power = float(request.form['horse_power'])
-        if horse_power <= 0:
-            return render_template('index.html', prediction_text="Please enter a positive value for Horse Power.")
+# Input field for the user to enter the horse power
+horse_power = st.number_input('Horse Power', min_value=0.0, step=0.1)
+
+# Button to trigger the prediction
+if st.button('Predict'):
+    if horse_power > 0:
         prediction = model.predict([[horse_power]])
-        return render_template('index.html', prediction_text=f'Fuel Economy (MPG): {prediction[0]:.2f}')
-    except ValueError:
-        return render_template('index.html', prediction_text="Please enter a valid number for Horse Power.")
-
-if __name__ == "__main__":
-    app.run(debug=True)
-
+        st.success(f'Fuel Economy (MPG): {prediction[0]:.2f}')
+    else:
+        st.error('Please enter a positive value for Horse Power.')
